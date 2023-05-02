@@ -9,6 +9,5 @@ public class SubElementProfile : Profile
     public SubElementProfile()
     {
         CreateMap<SubElement, SubElementItem>();
-
     }
 }
