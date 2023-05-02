@@ -4,10 +4,11 @@ using SalesOrders.Data.Entities;
 
 namespace SalesOrders.Api.Profiles;
 
-public class WindowsProfile : Profile
+public class SubElementProfile : Profile
 {
-    public WindowsProfile()
+    public SubElementProfile()
     {
-        CreateMap<Window, WindowItem>();
+        CreateMap<SubElement, SubElementItem>();
+
     }
 }
