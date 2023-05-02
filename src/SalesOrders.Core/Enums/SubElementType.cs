@@ -1,4 +1,4 @@
-﻿namespace SalesOrders.Data.Enums;
+﻿namespace SalesOrders.Core.Enums;
 
 public enum SubElementType
 {

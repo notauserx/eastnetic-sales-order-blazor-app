@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesOrders.Data;
 
@@ -10,9 +11,10 @@ using SalesOrders.Data;
 namespace SalesOrders.Data.Migrations
 {
     [DbContext(typeof(SalesOrdersDbContext))]
-    partial class SalesOrdersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230502180253_AddNavigationProps")]
+    partial class AddNavigationProps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");

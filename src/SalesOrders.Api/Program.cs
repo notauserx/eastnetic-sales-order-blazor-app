@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using SalesOrders.Api.Services;
 using SalesOrders.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// configure dbcontext
 builder.Services.AddDbContext<SalesOrdersDbContext>(
     options =>
         options.UseSqlite(
             builder.Configuration.GetConnectionString("SalesOrdersDb"),
             x => x.MigrationsAssembly("SalesOrders.Data")));
+
+// configure automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IOrderListService, OrderListService>();
 
 var app = builder.Build();
 
