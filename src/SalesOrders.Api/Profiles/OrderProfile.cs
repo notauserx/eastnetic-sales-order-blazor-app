@@ -8,7 +8,9 @@ public class OrderProfile : Profile
 {
     public OrderProfile()
     {
-        CreateMap<Order, OrderItem>();
+        CreateMap<Order, OrderItem>()
+            .ForMember(dest => dest.State,
+                       options => options.MapFrom(source => source.State.ToString()));
     }
 
 }

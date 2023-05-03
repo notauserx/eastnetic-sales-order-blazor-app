@@ -1,0 +1,29 @@
+﻿@page "/orders"
+@using SalesOrders.Contracts;
+@using SalesOrders.Contracts.Response;
+@inject HttpClient Http
+
+<PageTitle>Sales Orders</PageTitle>
+
+<h1>Sales Orders</h1>
+
+@if (OrderItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <Orders OrderItems="@OrderItems" />
+}
+
+@code {
+    private const string ServerEndpoint = "https://localhost:7080/api/Orders";
+
+    public List<OrderItem>? OrderItems { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(ServerEndpoint);
+    }
+
+}

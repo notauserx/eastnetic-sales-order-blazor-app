@@ -1,0 +1,36 @@
+﻿@using SalesOrders.Contracts;
+@using SalesOrders.Contracts.Response;
+@if(OrderItems == null)
+{
+    <p>No orders found.</p>
+}
+else
+{
+<table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>State</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orderItem in OrderItems)
+            {
+                <tr>
+                    <td>@orderItem.Name</td>
+                    <td>@orderItem.State</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public List<OrderItem>? OrderItems { get; set; }
+}

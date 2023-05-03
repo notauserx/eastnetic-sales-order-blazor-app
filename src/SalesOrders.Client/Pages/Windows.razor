@@ -1,0 +1,34 @@
+﻿@using SalesOrders.Contracts;
+@using SalesOrders.Contracts.Response;
+
+@if(WindowItems == null)
+{
+    <p> No windows available.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th># of Sub elements</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var windowItem in WindowItems)
+            {
+                <tr>
+                    <td>@windowItem.Name</td>
+                    <td>@windowItem.QuantityOfWindows</td>
+                    <td>@windowItem.NumberOfSubElements</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public List<WindowItem>? WindowItems { get; set; }
+}
