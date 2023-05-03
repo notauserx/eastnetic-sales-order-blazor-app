@@ -1,0 +1,62 @@
+﻿@page "/new-order"
+@using SalesOrders.Contracts.Response;
+@using SalesOrders.Core.Enums;
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<EditForm EditContext="@editContext" OnSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="newOrderItem.Name" />
+        </div>
+        <ValidationMessage For="@(() => newOrderItem.Name)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">State: </label>
+        <div class="col-md-4">
+            <InputSelect @bind-Value="@newOrderItem.State">
+
+                @foreach (var state in Enum.GetValues(typeof(USState)))
+                {
+                    <option value="@state">@state</option>
+                }
+            </InputSelect>
+        </div>
+        <ValidationMessage For="@(() => newOrderItem.State)" />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-light" @onclick="HandleCancel">Cancel</button>
+    </div>
+
+</EditForm>
+
+@code {
+    private EditContext? editContext;
+    private OrderItem newOrderItem = new()
+    {
+            Id = Guid.NewGuid(),
+            Windows = new List<WindowItem>(),
+    };
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(newOrderItem);
+    }
+
+    private async Task HandleSubmit()
+    {
+        await Http.PostAsJsonAsync(Endpoints.NewOrder, newOrderItem);
+        // Process the valid form
+    }
+
+    public void HandleCancel()
+    {
+        NavigationManager.NavigateTo("/get-orders");
+    }
+}

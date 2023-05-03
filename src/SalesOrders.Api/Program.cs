@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
-using SalesOrders.Api.Services;
 using SalesOrders.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +20,6 @@ builder.Services.AddDbContext<SalesOrdersDbContext>(
 
 // configure automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddScoped<IOrderListService, OrderListService>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿@page "/orders"
+﻿@page "/get-orders"
 @using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
 @inject HttpClient Http
@@ -7,6 +7,11 @@
 
 <h1>Sales Orders</h1>
 
+<div class="row">
+    <div class="col-sm-1">
+        <a class="btn btn-info" href="new-order">Add</a>
+    </div>
+</div>
 @if (OrderItems == null)
 {
     <p><em>Loading...</em></p>
@@ -17,13 +22,16 @@ else
 }
 
 @code {
-    private const string ServerEndpoint = "https://localhost:7080/api/Orders";
 
     public List<OrderItem>? OrderItems { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(ServerEndpoint);
+        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrders);
     }
 
+    private async Task AddOrderAsync()
+    {
+        
+    }
 }
