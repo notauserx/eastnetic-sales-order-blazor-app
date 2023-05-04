@@ -8,6 +8,9 @@ public class SubElementProfile : Profile
 {
     public SubElementProfile()
     {
-        CreateMap<SubElement, SubElementItem>();
+        CreateMap<SubElementItem, SubElement>();
+        CreateMap<SubElement, SubElementItem>()
+            .ForMember(dest => dest.Type,
+                       options => options.MapFrom(source => source.Type.ToString()));
     }
 }

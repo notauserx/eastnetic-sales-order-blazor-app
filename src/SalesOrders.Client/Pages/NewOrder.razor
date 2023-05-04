@@ -37,18 +37,63 @@
     </div>
 
 </EditForm>
+<br/>
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="AddNewWindow">Add Window</button>
+
+    @if (showNewWindowForm)
+    {
+        <NewWindow 
+            OrderId="orderId"
+            NewWindowItem="newWindowItem"
+            SaveItem="SaveNewWindow"
+            DiscardItem="CancelAddNewWindow"/>
+    }
+
+    <label class="form-label">Windows: </label>
+    <div class="col-md-4">
+        <Windows WindowItems="newOrderItem.Windows" />
+    </div>
+</div>
 
 @code {
+    private Guid orderId = Guid.NewGuid();
+    private bool showNewWindowForm = false;
+    private WindowItem? newWindowItem;
     private EditContext? editContext;
-    private OrderItem newOrderItem = new()
-    {
-            Id = Guid.NewGuid(),
-            Windows = new List<WindowItem>(),
-    };
+    private OrderItem? newOrderItem;
 
     protected override void OnInitialized()
     {
+        newOrderItem = new()
+        {
+            Id = orderId,
+            Windows = new List<WindowItem>(),
+        };
+        InitializeNewWindowItem();
+
         editContext = new EditContext(newOrderItem);
+    }
+
+    private void InitializeNewWindowItem()
+    {
+        newWindowItem = WindowItem.CreateForOrder(orderId);
+    }
+
+    private void AddNewWindow()
+    {
+        showNewWindowForm = true;
+    }
+
+    public void SaveNewWindow()
+    {
+        newOrderItem?.Windows?.Add(new WindowItem(newWindowItem));
+        InitializeNewWindowItem();
+    }
+
+    public void CancelAddNewWindow()
+    {
+        showNewWindowForm = true;
     }
 
     private async Task HandleSubmit()

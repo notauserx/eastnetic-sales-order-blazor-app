@@ -33,7 +33,8 @@ public class OrdersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<OrderItem>> CreateOrderAsync(OrderItem orderItem)
     {
-        context.Orders.Add(mapper.Map<Order> (orderItem));
+        var newOrder = mapper.Map<Order>(orderItem);
+        context.Orders.Add(newOrder);
         await context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(orderItem), orderItem);

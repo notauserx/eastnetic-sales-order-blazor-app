@@ -8,6 +8,7 @@ public class WindowsProfile : Profile
 {
     public WindowsProfile()
     {
+        CreateMap<WindowItem, Window>();
         CreateMap<Window, WindowItem>();
     }
 }

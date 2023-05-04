@@ -1,0 +1,72 @@
+﻿@page "/new-window"
+@using SalesOrders.Contracts.Response;
+@using SalesOrders.Core.Enums;
+@using Microsoft.Extensions.Logging
+@inject ILogger<NewWindow> Logger
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<EditForm EditContext="@editContext">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="NewWindowItem.Name" />
+        </div>
+        <ValidationMessage For="@(() => NewWindowItem.Name)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"># of Windows</label>
+        <div class="col-md-4">
+            <InputNumber class="form-control" @bind-Value="NewWindowItem.QuantityOfWindows" />
+        </div>
+        <ValidationMessage For="@(() => NewWindowItem.QuantityOfWindows)" />
+    </div>
+
+    <div class="mb-3">
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" @onclick="HandleSave">Save</button>
+        <button class="btn btn-light" @onclick="HandleCancel">Cancel</button>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid OrderId { get; set; }
+    [Parameter]
+    public WindowItem NewWindowItem { get; set; }
+    [Parameter]
+    public EventCallback<WindowItem> SaveItem { get; set; }
+    [Parameter]
+    public EventCallback DiscardItem { get; set; }
+
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(NewWindowItem);
+    }
+
+    private async Task HandleSave()
+    {
+        if (editContext != null && editContext.Validate())
+        {
+            Logger.LogInformation("HandleSubmit called: Form is valid");
+            await SaveItem.InvokeAsync(NewWindowItem);
+        }
+        else
+        {
+            Logger.LogInformation("HandleSubmit called: Form is INVALID");
+        }
+    }
+
+    public async void HandleCancel()
+    {
+        await DiscardItem.InvokeAsync();
+    }
+}
