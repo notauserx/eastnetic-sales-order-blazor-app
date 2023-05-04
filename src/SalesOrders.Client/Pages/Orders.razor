@@ -50,6 +50,7 @@ else
                                 OrderId="orderItem.Id"
                                 WindowItems="orderItem.Windows"
                                 OnDeleteCallback="DeleteWindow"
+                                OnSaveSubElementCallback="SaveSubElement"
                                 OnDeleteSubElementCallback="DeleteSubElement"/>
                         </td>
                     </tr>
@@ -82,6 +83,11 @@ else
         NavigationManager.NavigateTo("/get-orders");
     }
 
+    private async Task SaveSubElement(SubElementItem item)
+    {
+        await Http.PostAsJsonAsync(Endpoints.NewSubElementUri(item.WindowId), item);
+        NavigationManager.NavigateTo("/get-orders");
+    }
     private async Task DeleteSubElement(SubElementItem item)
     {
         await Http.DeleteAsync(Endpoints.DeleteSubElementUri(item.WindowId, item.Id));

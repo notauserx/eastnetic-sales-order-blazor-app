@@ -13,15 +13,15 @@
         <div class="mb-3">
             <label class="form-label">Element</label>
             <div class="col-md-6">
-                <InputNumber class="form-control" @bind-Value="NewSubElementItem.Element" />
+                <InputNumber class="form-control" @bind-Value="newSubElementItem.Element" />
             </div>
-            <ValidationMessage For="@(() => NewSubElementItem.Element)" />
+            <ValidationMessage For="@(() => newSubElementItem.Element)" />
         </div>
 
         <div class="mb-3">
             <label class="form-label">Type: </label>
             <div class="col-md-6">
-                <InputSelect @bind-Value="@NewSubElementItem.Type">
+                <InputSelect @bind-Value="@newSubElementItem.Type">
                     <option value="">None</option>
 
                     @foreach (var state in Enum.GetValues(typeof(SubElementType)))
@@ -30,23 +30,23 @@
                     }
                 </InputSelect>
             </div>
-            <ValidationMessage For="@(() => NewSubElementItem.Type)" />
+            <ValidationMessage For="@(() => newSubElementItem.Type)" />
         </div>
 
         <div class="mb-3">
             <label class="form-label">Width</label>
             <div class="col-md-6">
-                <InputNumber class="form-control" @bind-Value="NewSubElementItem.Width" />
+                <InputNumber class="form-control" @bind-Value="newSubElementItem.Width" />
             </div>
-            <ValidationMessage For="@(() => NewSubElementItem.Width)" />
+            <ValidationMessage For="@(() => newSubElementItem.Width)" />
         </div>
 
         <div class="mb-3">
             <label class="form-label">Height</label>
             <div class="col-md-6">
-                <InputNumber class="form-control" @bind-Value="NewSubElementItem.Height" />
+                <InputNumber class="form-control" @bind-Value="newSubElementItem.Height" />
             </div>
-            <ValidationMessage For="@(() => NewSubElementItem.Height)" />
+            <ValidationMessage For="@(() => newSubElementItem.Height)" />
         </div>
 
 
@@ -62,24 +62,25 @@
     public Guid OrderId { get; set; }
     [Parameter]
     public Guid WindowId { get; set; }
-    [Parameter]
-    public SubElementItem NewSubElementItem { get; set; }
+
     [Parameter]
     public EventCallback<SubElementItem> OnSaveItem { get; set; }
     [Parameter]
     public EventCallback OnDiscardItem { get; set; }
+
+    private SubElementItem newSubElementItem;
 
     private EditContext editContext;
 
     protected override void OnInitialized()
     {
         InitializeNewSubElement();
-        editContext = new EditContext(NewSubElementItem);
+        editContext = new EditContext(newSubElementItem);
     }
 
     private void InitializeNewSubElement()
     {
-        NewSubElementItem = SubElementItem.CreateForWindow(WindowId);
+        newSubElementItem = SubElementItem.CreateForWindow(WindowId);
     }
 
     private async Task HandleSaveSubElement()
@@ -87,7 +88,7 @@
         if (editContext != null && editContext.Validate())
         {
             Logger.LogInformation("HandleSubmit called: Form is valid");
-            await OnSaveItem.InvokeAsync(NewSubElementItem);
+            await OnSaveItem.InvokeAsync(newSubElementItem);
             InitializeNewSubElement();
         }
         else

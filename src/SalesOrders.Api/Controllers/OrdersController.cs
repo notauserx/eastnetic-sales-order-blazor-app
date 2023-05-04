@@ -48,26 +48,19 @@ public class OrdersController : ControllerBase
     [HttpPost("{orderId}/windows")]
     public async Task<ActionResult<WindowItem>> CreateOrderWindowAsync(Guid orderId, WindowItem windowItem)
     {
-        try
+        var order = await context.Orders.FirstOrDefaultAsync(i => i.Id == orderId);
+
+        if (order == null)
         {
-            var order = await context.Orders.FirstOrDefaultAsync(i => i.Id == orderId);
-
-            if(order == null)
-            {
-                return BadRequest();
-            }
-            var newWindow = mapper.Map<Window>(windowItem);
-            newWindow.Order = order;
-            context.Windows.Add(newWindow);
-
-            await context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(windowItem), windowItem);
+            return BadRequest();
         }
-        catch (Exception ex)
-        {
-            throw;
-        }
+        var newWindow = mapper.Map<Window>(windowItem);
+        newWindow.Order = order;
+        context.Windows.Add(newWindow);
+
+        await context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(windowItem), windowItem);
     }
 
     [HttpDelete("{id}")]

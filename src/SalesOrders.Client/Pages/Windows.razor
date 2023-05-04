@@ -27,9 +27,22 @@ else
                     <td>@windowItem.QuantityOfWindows</td>
                     <td>@windowItem.NumberOfSubElements</td>
                     <td>
-                        <button class="btn btn-secondary" @onclick="@(async () => DeleteWindowAsync(windowItem))">Delete</button>
+                        <button class="btn btn-primary" @onclick="@(() => ToggleAddSubElement(windowItem.Id))">Create SubElement</button>
+                        <button class="btn btn-secondary" @onclick="@(() => DeleteWindowAsync(windowItem))">Delete</button>
                     </td>
                 </tr>
+                @if (NewSubElementWindowId == windowItem.Id)
+                {
+                    <tr>
+                        <td colspan="4">
+                            <NewSubElement
+                                OrderId="windowItem.OrderId"
+                                WindowId="windowItem.Id"
+                                OnSaveItem="OnSaveNewSubElement"
+                                OnDiscardItem="OnDiscardNewSubElement" />
+                        </td>
+                    </tr>
+                }
                 @if(windowItem.SubElements != null && windowItem.SubElements.Any())
                 {
                     <tr>
@@ -60,11 +73,30 @@ else
     [Parameter]
     public EventCallback<SubElementItem> OnDeleteSubElementCallback { get; set; }
 
+    [Parameter]
+    public EventCallback<SubElementItem> OnSaveSubElementCallback { get; set; }
+
+    private Guid NewSubElementWindowId;
 
     public async void DeleteWindowAsync(WindowItem item)
     {
         await OnDeleteCallback.InvokeAsync(item);
+    }
 
+    public void ToggleAddSubElement(Guid windowId)
+    {
+        NewSubElementWindowId = windowId;
+    }
+
+    private async void OnSaveNewSubElement(SubElementItem item)
+    {
+        await OnSaveSubElementCallback.InvokeAsync(item);
+        NewSubElementWindowId = Guid.Empty;
+    }
+
+    private void OnDiscardNewSubElement()
+    {
+        NewSubElementWindowId = Guid.Empty;
     }
 
 }

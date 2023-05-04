@@ -8,8 +8,8 @@ public class Endpoints
     public static Uri NewWindowUri(Guid orderId) =>
         new($"{baseAddress}/orders/{orderId}/windows");
 
-    public static Uri NewSubElementUri(Guid orderId, Guid windowId) =>
-        new($"{baseAddress}/orders/{orderId}/windows/{windowId}/subelements");
+    public static Uri NewSubElementUri(Guid windowId) =>
+        new($"{baseAddress}/windows/{windowId}/subelements");
 
     public static Uri DeleteOrderUri(Guid id) =>
         new($"{baseAddress}/orders/{id}");
