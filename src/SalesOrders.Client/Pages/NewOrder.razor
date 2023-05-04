@@ -1,6 +1,8 @@
 ﻿@page "/new-order"
 @using SalesOrders.Contracts.Response;
 @using SalesOrders.Core.Enums;
+@using Microsoft.Extensions.Logging
+@inject ILogger<NewOrder> Logger
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -51,8 +53,15 @@
 
     private async Task HandleSubmit()
     {
-        await Http.PostAsJsonAsync(Endpoints.NewOrder, newOrderItem);
-        // Process the valid form
+        if (editContext != null && editContext.Validate())
+        {
+            Logger.LogInformation("HandleSubmit called: Form is valid");
+            await Http.PostAsJsonAsync(Endpoints.NewOrder, newOrderItem);
+        }
+        else
+        {
+            Logger.LogInformation("HandleSubmit called: Form is INVALID");
+        }
     }
 
     public void HandleCancel()
