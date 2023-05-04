@@ -1,42 +1,44 @@
 ﻿@using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
-
-<h5>SubElements:</h5>
-@if (SubElementItems == null)
-{
-    <p> No sub elements available.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Element</th>
-                <th>Type</th>
-                <th>Width</th>
-                <th>Height</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var subElementItem in SubElementItems)
-            {
+<div class="row">
+    <h5>SubElements:</h5>
+    @if (SubElementItems == null || SubElementItems.Count == 0)
+    {
+        <p> No sub elements available.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@subElementItem.Element</td>
-                    <td>@subElementItem.Type</td>
-                    <td>@subElementItem.Width</td>
-                    <td>@subElementItem.Height</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
+                    <th>Element</th>
+                    <th>Type</th>
+                    <th>Width</th>
+                    <th>Height</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var subElementItem in SubElementItems)
+                {
+                    <tr>
+                        <td>@subElementItem.Element</td>
+                        <td>@subElementItem.Type</td>
+                        <td>@subElementItem.Width</td>
+                        <td>@subElementItem.Height</td>
+                        <td>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
-@code {
+
+@code
+{
     [Parameter]
     public List<SubElementItem>? SubElementItems { get; set; }
 }

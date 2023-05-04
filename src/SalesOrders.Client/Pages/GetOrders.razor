@@ -27,6 +27,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrders);
+        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrdersUri);
     }
 }

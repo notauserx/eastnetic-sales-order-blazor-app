@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 
 <h4>Windows:</h4>
-@if(WindowItems == null)
+@if(WindowItems == null || WindowItems.Count == 0)
 {
     <p> No windows available.</p>
 }

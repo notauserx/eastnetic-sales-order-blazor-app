@@ -4,13 +4,13 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-@if(OrderItems == null)
+@if (OrderItems == null || OrderItems.Count == 0)
 {
     <p>No orders found.</p>
 }
 else
 {
-<table class="table">
+    <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
@@ -25,17 +25,29 @@ else
                     <td>@orderItem.Name</td>
                     <td>@orderItem.State</td>
                     <td>
-                        <button>Add Window</button>
-                        <button @onclick="@(() => DeleteOrder(orderItem.Id))">Delete</button>
+                        <button @onclick="@(() => ToggleAddWindowContent(orderItem.Id))" class="btn btn-success">Add Window</button>
+                        <button @onclick="@(() => DeleteOrder(orderItem.Id))" class="btn btn-secondary">Delete</button>
                     </td>
                 </tr>
+                @if (showAddWindowContentOrderId == orderItem.Id)
+                {
+                    <tr>
+                        <td colspan="3">
+                            <NewWindow OrderId="orderItem.Id"
+                               NewWindowItem="WindowItem.CreateForOrder(orderItem.Id)"
+                               SaveItem="OnSaveNewWindowToOrder"
+                               DiscardItem="OnDiscardAddWindow" />
+                        </td>
+
+
+                    </tr>
+                }
                 @if (orderItem.Windows != null && orderItem.Windows.Any())
                 {
                     <tr>
                         <td colspan="3">
-                            <Windows
-                                WindowItems="orderItem.Windows"
-                                OnDeleteCallback="DeleteWindow"/>
+                            <Windows WindowItems="orderItem.Windows"
+                         OnDeleteCallback="DeleteWindow" />
                         </td>
                     </tr>
                 }
@@ -48,8 +60,12 @@ else
     [Parameter]
     public List<OrderItem>? OrderItems { get; set; }
 
-    [Parameter]
-    public EventCallback<OrderItem> OnDeleteOrder { get; set; }
+    private Guid showAddWindowContentOrderId;
+
+    private void ToggleAddWindowContent(Guid orderId)
+    {
+        showAddWindowContentOrderId = orderId;
+    }
 
     private async Task DeleteOrder(Guid orderId)
     {
@@ -61,5 +77,17 @@ else
     {
         await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
         NavigationManager.NavigateTo("/get-orders");
+    }
+
+    private async void OnSaveNewWindowToOrder(WindowItem windowItem)
+    {
+        await Http.PostAsJsonAsync(Endpoints.NewWindowUri(windowItem.OrderId), windowItem);
+        showAddWindowContentOrderId = Guid.Empty;
+        NavigationManager.NavigateTo("/get-orders");
+    }
+
+    private void OnDiscardAddWindow()
+    {
+        showAddWindowContentOrderId = Guid.Empty;
     }
 }

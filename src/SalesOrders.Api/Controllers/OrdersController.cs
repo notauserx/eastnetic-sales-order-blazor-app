@@ -39,10 +39,35 @@ public class OrdersController : ControllerBase
     {
         var newOrder = mapper.Map<Order>(orderItem);
         context.Orders.Add(newOrder);
-        
+
         await context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(orderItem), orderItem);
+    }
+
+    [HttpPost("{orderId}/windows")]
+    public async Task<ActionResult<WindowItem>> CreateOrderWindowAsync(Guid orderId, WindowItem windowItem)
+    {
+        try
+        {
+            var order = await context.Orders.FirstOrDefaultAsync(i => i.Id == orderId);
+
+            if(order == null)
+            {
+                return BadRequest();
+            }
+            var newWindow = mapper.Map<Window>(windowItem);
+            newWindow.Order = order;
+            context.Windows.Add(newWindow);
+
+            await context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(windowItem), windowItem);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
     [HttpDelete("{id}")]
@@ -51,7 +76,7 @@ public class OrdersController : ControllerBase
         var order = await context.Orders
             .FirstOrDefaultAsync(i => i.Id == id);
 
-        if(order == null)
+        if (order == null)
         {
             return NotFound();
         }
@@ -68,7 +93,7 @@ public class OrdersController : ControllerBase
         var window = await context.Windows
             .FirstOrDefaultAsync(i => i.Id == windowId && i.OrderId == orderId);
 
-        if(window == null)
+        if (window == null)
         {
             return NotFound();
         }
@@ -80,4 +105,20 @@ public class OrdersController : ControllerBase
         return NoContent();
     }
 
+    [HttpDelete("{orderId}/windows/{windowId}/subelements/{subelementId}")]
+    public async Task<IActionResult> DeleteOrderWindowSubElement(Guid windowId, Guid subelementId)
+    {
+        var subElement = await context.SubElements
+            .FirstOrDefaultAsync(i => i.Id == subelementId && i.WindowId == windowId);
+
+        if (subElement == null)
+        {
+            return NotFound();
+        }
+
+        context.SubElements.Remove(subElement);
+        await context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

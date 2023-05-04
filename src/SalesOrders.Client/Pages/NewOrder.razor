@@ -6,6 +6,10 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
+<h4>Add New Order Details:</h4>
+<div class="row">
+    <button class="btn btn-secondary">Back to orders</button>
+</div>
 <EditForm EditContext="@editContext" OnSubmit="@HandleSubmit">
     <DataAnnotationsValidator />
 
@@ -50,7 +54,6 @@
                    DiscardItem="CancelAddNewWindow" />
         }
 
-        <label class="form-label">Windows: </label>
         <div class="col-md-4">
             <Windows WindowItems="newOrderItem.Windows"
                      OnDeleteCallback="OnDeleteWindow" />
@@ -104,7 +107,8 @@
         if (editContext != null && editContext.Validate())
         {
             Logger.LogInformation("HandleSubmit called: Form is valid");
-            await Http.PostAsJsonAsync(Endpoints.NewOrder, newOrderItem);
+            await Http.PostAsJsonAsync(Endpoints.NewOrderUri, newOrderItem);
+            NavigationManager.NavigateTo("get-orders");
         }
         else
         {
