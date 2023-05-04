@@ -23,14 +23,10 @@ else
 }
 
 @code {
-
     public List<OrderItem>? OrderItems { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrders);
     }
-
-    
-
 }

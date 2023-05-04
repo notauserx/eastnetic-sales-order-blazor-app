@@ -6,7 +6,10 @@ public class Endpoints
     public static string GetOrders => $"{baseAddress}/orders";
     public static string NewOrder => $"{baseAddress}/orders";
 
+    public static Uri DeleteOrderUri(Guid id) =>
+        new($"{baseAddress}/orders/{id}");
+
     public static Uri DeleteWindowUri(Guid orderId, Guid windowId) =>
-        new Uri($"{baseAddress}/orders/{orderId}/windows/{windowId}");
+        new($"{baseAddress}/orders/{orderId}/windows/{windowId}");
     
 }

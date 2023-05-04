@@ -25,8 +25,8 @@ else
                     <td>@orderItem.Name</td>
                     <td>@orderItem.State</td>
                     <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
+                        <button>Add Window</button>
+                        <button @onclick="@(() => DeleteOrder(orderItem.Id))">Delete</button>
                     </td>
                 </tr>
                 @if (orderItem.Windows != null && orderItem.Windows.Any())
@@ -35,7 +35,7 @@ else
                         <td colspan="3">
                             <Windows
                                 WindowItems="orderItem.Windows"
-                                OnDeleteCallback="OnDeleteWindow"/>
+                                OnDeleteCallback="DeleteWindow"/>
                         </td>
                     </tr>
                 }
@@ -48,7 +48,16 @@ else
     [Parameter]
     public List<OrderItem>? OrderItems { get; set; }
 
-    private async Task OnDeleteWindow(WindowItem item)
+    [Parameter]
+    public EventCallback<OrderItem> OnDeleteOrder { get; set; }
+
+    private async Task DeleteOrder(Guid orderId)
+    {
+        await Http.DeleteAsync(Endpoints.DeleteOrderUri(orderId));
+        NavigationManager.NavigateTo("/get-orders");
+    }
+
+    private async Task DeleteWindow(WindowItem item)
     {
         await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
         NavigationManager.NavigateTo("/get-orders");

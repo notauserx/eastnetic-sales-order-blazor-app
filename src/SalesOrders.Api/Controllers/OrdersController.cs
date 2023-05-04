@@ -41,10 +41,28 @@ public class OrdersController : ControllerBase
         return CreatedAtAction(nameof(orderItem), orderItem);
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteOrder(Guid id)
+    {
+        var order = await context.Orders
+            .FirstOrDefaultAsync(i => i.Id == id);
+
+        if(order == null)
+        {
+            return NotFound();
+        }
+
+        context.Orders.Remove(order);
+        await context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     [HttpDelete("{orderId}/windows/{windowId}")]
     public async Task<IActionResult> DeleteOrderWindow(Guid orderId, Guid windowId)
     {
-        var window = await context.Windows.FirstOrDefaultAsync(i => i.Id == windowId);
+        var window = await context.Windows
+            .FirstOrDefaultAsync(i => i.Id == windowId && i.OrderId == orderId);
 
         if(window == null)
         {
