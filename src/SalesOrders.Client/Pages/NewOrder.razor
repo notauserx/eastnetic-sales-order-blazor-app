@@ -52,7 +52,9 @@
 
     <label class="form-label">Windows: </label>
     <div class="col-md-4">
-        <Windows WindowItems="newOrderItem.Windows" />
+        <Windows
+            WindowItems="newOrderItem.Windows" 
+            OnDeleteCallback="OnDeleteWindow"/>
     </div>
 </div>
 
@@ -112,5 +114,10 @@
     public void HandleCancel()
     {
         NavigationManager.NavigateTo("/get-orders");
+    }
+
+    private async Task OnDeleteWindow(WindowItem item)
+    {
+        newOrderItem?.Windows?.Remove(item);
     }
 }

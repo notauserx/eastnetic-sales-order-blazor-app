@@ -2,6 +2,7 @@
 @using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 <PageTitle>Sales Orders</PageTitle>
 
@@ -30,8 +31,6 @@ else
         OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrders);
     }
 
-    private async Task AddOrderAsync()
-    {
-        
-    }
+    
+
 }

@@ -1,5 +1,9 @@
 ﻿@using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
+
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
 @if(OrderItems == null)
 {
     <p>No orders found.</p>
@@ -25,6 +29,16 @@ else
                         <button>Delete</button>
                     </td>
                 </tr>
+                @if (orderItem.Windows != null && orderItem.Windows.Any())
+                {
+                    <tr>
+                        <td colspan="3">
+                            <Windows
+                                WindowItems="orderItem.Windows"
+                                OnDeleteCallback="OnDeleteWindow"/>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -33,4 +47,10 @@ else
 @code {
     [Parameter]
     public List<OrderItem>? OrderItems { get; set; }
+
+    private async Task OnDeleteWindow(WindowItem item)
+    {
+        await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
+        NavigationManager.NavigateTo("/get-orders");
+    }
 }

@@ -9,7 +9,7 @@ public class WindowItem
     {
         
     }
-    private WindowItem(Guid orderiD) 
+    public WindowItem(Guid orderiD) 
     {
         Id = Guid.NewGuid();
         OrderId = orderiD;

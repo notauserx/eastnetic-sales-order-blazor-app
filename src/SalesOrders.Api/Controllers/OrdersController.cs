@@ -35,8 +35,27 @@ public class OrdersController : ControllerBase
     {
         var newOrder = mapper.Map<Order>(orderItem);
         context.Orders.Add(newOrder);
+        
         await context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(orderItem), orderItem);
     }
+
+    [HttpDelete("{orderId}/windows/{windowId}")]
+    public async Task<IActionResult> DeleteOrderWindow(Guid orderId, Guid windowId)
+    {
+        var window = await context.Windows.FirstOrDefaultAsync(i => i.Id == windowId);
+
+        if(window == null)
+        {
+            return NotFound();
+        }
+
+        context.Windows.Remove(window);
+
+        await context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
 }

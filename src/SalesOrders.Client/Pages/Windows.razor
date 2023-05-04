@@ -1,6 +1,9 @@
 ﻿@using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
 
+<h4>Windows:</h4>
 @if(WindowItems == null)
 {
     <p> No windows available.</p>
@@ -13,6 +16,7 @@ else
                 <th>Name</th>
                 <th>Quantity</th>
                 <th># of Sub elements</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +26,9 @@ else
                     <td>@windowItem.Name</td>
                     <td>@windowItem.QuantityOfWindows</td>
                     <td>@windowItem.NumberOfSubElements</td>
+                    <td>
+                        <button class="btn btn-light" @onclick="@(async () => DeleteWindowAsync(windowItem))">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -31,4 +38,14 @@ else
 @code {
     [Parameter]
     public List<WindowItem>? WindowItems { get; set; }
+
+    [Parameter]
+    public EventCallback<WindowItem> OnDeleteCallback { get; set; }
+
+
+    public async void DeleteWindowAsync(WindowItem item)
+    {
+        await OnDeleteCallback.InvokeAsync(item);
+        
+    }
 }
