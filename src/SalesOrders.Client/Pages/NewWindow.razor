@@ -34,6 +34,26 @@
     </div>
 
 </EditForm>
+<br/>
+<div class="row">
+    <div class="mb-3">
+        <button class="btn btn-primary" @onclick="AddNewSubElement">Add SubElement</button>
+
+        @if (showNewSubElementForm)
+        {
+            <NewSubElement
+                OrderId="NewWindowItem.OrderId"
+                WindowId="NewWindowItem.Id"
+                OnSaveItem="HandleNewSubElementSave"
+                OnDiscardItem="HandleNewSubElementDiscard"/>
+        }
+
+        <label class="form-label">Windows: </label>
+        <div class="col-md-4">
+            <SubElements SubElementItems="NewWindowItem.SubElements" />
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -46,10 +66,22 @@
     public EventCallback DiscardItem { get; set; }
 
     private EditContext editContext;
+    private SubElementItem newSubElementItem;
+    private bool showNewSubElementForm;
 
     protected override void OnInitialized()
     {
         editContext = new EditContext(NewWindowItem);
+    }
+
+    private void InitializeNewSubElementItem()
+    {
+        newSubElementItem = SubElementItem.CreateForWindow(NewWindowItem.Id);
+    }
+
+    private void AddNewSubElement()
+    {
+        showNewSubElementForm = true;
     }
 
     private async Task HandleSave()
@@ -68,5 +100,21 @@
     public async void HandleCancel()
     {
         await DiscardItem.InvokeAsync();
+    }
+
+    public void HandleNewSubElementSave(SubElementItem item)
+    {
+        NewWindowItem?.SubElements?.Add(new SubElementItem(item));
+        showNewSubElementForm = false;
+    }
+
+    public void HandleNewSubElementDiscard()
+    {
+        showNewSubElementForm = false;
+    }
+
+    public void HandleSubElementDelete(SubElementItem item)
+    {
+        NewWindowItem?.SubElements?.Remove(item);
     }
 }

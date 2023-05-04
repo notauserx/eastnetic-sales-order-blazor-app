@@ -30,6 +30,17 @@ else
                         <button class="btn btn-light" @onclick="@(async () => DeleteWindowAsync(windowItem))">Delete</button>
                     </td>
                 </tr>
+                @if(windowItem.SubElements != null && windowItem.SubElements.Any())
+                {
+                    <tr>
+                        <td colspan="4">
+                            <SubElements
+                                SubElementItems="windowItem.SubElements"
+                            />
+                                
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

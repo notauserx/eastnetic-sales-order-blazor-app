@@ -1,0 +1,104 @@
+﻿@page "/new-sub-element"
+@using SalesOrders.Contracts.Response;
+@using SalesOrders.Core.Enums;
+@using Microsoft.Extensions.Logging
+@inject ILogger<NewSubElement> Logger
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<EditForm EditContext="@editContext">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">Element</label>
+        <div class="col-md-4">
+            <InputNumber class="form-control" @bind-Value="NewSubElementItem.Element" />
+        </div>
+        <ValidationMessage For="@(() => NewSubElementItem.Element)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type: </label>
+        <div class="col-md-4">
+            <InputSelect @bind-Value="@NewSubElementItem.Type">
+                <option value="">None</option>
+
+                @foreach (var state in Enum.GetValues(typeof(SubElementType)))
+                {
+                    <option value="@state">@state</option>
+                }
+            </InputSelect>
+        </div>
+        <ValidationMessage For="@(() => NewSubElementItem.Type)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Width</label>
+        <div class="col-md-4">
+            <InputNumber class="form-control" @bind-Value="NewSubElementItem.Width" />
+        </div>
+        <ValidationMessage For="@(() => NewSubElementItem.Width)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Height</label>
+        <div class="col-md-4">
+            <InputNumber class="form-control" @bind-Value="NewSubElementItem.Height" />
+        </div>
+        <ValidationMessage For="@(() => NewSubElementItem.Height)" />
+    </div>
+
+        <div class="mb-3">
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" @onclick="HandleSaveSubElement">Save Sub Element</button>
+        <button class="btn btn-light" @onclick="HandleCancelSubElement">Cancel</button>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid OrderId { get; set; }
+    [Parameter]
+    public Guid WindowId { get; set; }
+    [Parameter]
+    public SubElementItem NewSubElementItem { get; set; }
+    [Parameter]
+    public EventCallback<SubElementItem> OnSaveItem { get; set; }
+    [Parameter]
+    public EventCallback OnDiscardItem { get; set; }
+
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        InitializeNewSubElement();
+        editContext = new EditContext(NewSubElementItem);
+    }
+
+    private void InitializeNewSubElement()
+    {
+        NewSubElementItem = SubElementItem.CreateForWindow(WindowId);
+    }
+
+    private async Task HandleSaveSubElement()
+    {
+        if (editContext != null && editContext.Validate())
+        {
+            Logger.LogInformation("HandleSubmit called: Form is valid");
+            await OnSaveItem.InvokeAsync(NewSubElementItem);
+            InitializeNewSubElement();
+        }
+        else
+        {
+            Logger.LogInformation("HandleSubmit called: Form is INVALID");
+        }
+    }
+
+    public async void HandleCancelSubElement()
+    {
+        await OnDiscardItem.InvokeAsync();
+    }
+}

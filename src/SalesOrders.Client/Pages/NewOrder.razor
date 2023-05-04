@@ -38,23 +38,23 @@
 
 </EditForm>
 <br/>
-<div class="mb-3">
-    <button class="btn btn-primary" @onclick="AddNewWindow">Add Window</button>
+<div class="row">
+    <div class="mb-3">
+        <button class="btn btn-primary" @onclick="AddNewWindow">Add Window</button>
 
-    @if (showNewWindowForm)
-    {
-        <NewWindow 
-            OrderId="orderId"
-            NewWindowItem="newWindowItem"
-            SaveItem="SaveNewWindow"
-            DiscardItem="CancelAddNewWindow"/>
-    }
+        @if (showNewWindowForm)
+        {
+            <NewWindow OrderId="orderId"
+                   NewWindowItem="newWindowItem"
+                   SaveItem="SaveNewWindow"
+                   DiscardItem="CancelAddNewWindow" />
+        }
 
-    <label class="form-label">Windows: </label>
-    <div class="col-md-4">
-        <Windows
-            WindowItems="newOrderItem.Windows" 
-            OnDeleteCallback="OnDeleteWindow"/>
+        <label class="form-label">Windows: </label>
+        <div class="col-md-4">
+            <Windows WindowItems="newOrderItem.Windows"
+                     OnDeleteCallback="OnDeleteWindow" />
+        </div>
     </div>
 </div>
 
@@ -91,11 +91,12 @@
     {
         newOrderItem?.Windows?.Add(new WindowItem(newWindowItem));
         InitializeNewWindowItem();
+        showNewWindowForm = false;
     }
 
     public void CancelAddNewWindow()
     {
-        showNewWindowForm = true;
+        showNewWindowForm = false;
     }
 
     private async Task HandleSubmit()

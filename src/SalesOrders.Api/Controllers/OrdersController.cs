@@ -25,9 +25,13 @@ public class OrdersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        var orders = await context.Orders.Include(o => o.Windows).ToListAsync();
+        var query = context.Orders
+        .AsNoTracking()
+        .Include(o => o.Windows)
+            .ThenInclude(w => w.SubElements)
+        .AsQueryable();
 
-        return Ok(mapper.Map<List<OrderItem>>(orders));
+        return Ok(mapper.Map<List<OrderItem>>(await query.ToListAsync()));
     }
 
     [HttpPost]
