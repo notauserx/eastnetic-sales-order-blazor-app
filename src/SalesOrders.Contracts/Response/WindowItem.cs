@@ -1,4 +1,6 @@
-﻿namespace SalesOrders.Contracts.Response;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SalesOrders.Contracts.Response;
 
 public class WindowItem
 {
