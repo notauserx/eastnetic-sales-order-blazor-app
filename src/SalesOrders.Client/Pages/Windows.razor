@@ -36,6 +36,7 @@ else
                         <td colspan="4">
                             <SubElements
                                 SubElementItems="windowItem.SubElements"
+                                OnDeleteCallback="OnDeleteSubElementCallback"
                             />
                                 
                         </td>
@@ -48,15 +49,22 @@ else
 
 @code {
     [Parameter]
+    public Guid OrderId { get; set; }
+
+    [Parameter]
     public List<WindowItem>? WindowItems { get; set; }
 
     [Parameter]
     public EventCallback<WindowItem> OnDeleteCallback { get; set; }
 
+    [Parameter]
+    public EventCallback<SubElementItem> OnDeleteSubElementCallback { get; set; }
+
 
     public async void DeleteWindowAsync(WindowItem item)
     {
         await OnDeleteCallback.InvokeAsync(item);
-        
+
     }
+
 }

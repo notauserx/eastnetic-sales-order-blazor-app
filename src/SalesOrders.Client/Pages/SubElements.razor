@@ -27,7 +27,8 @@
                         <td>@subElementItem.Width</td>
                         <td>@subElementItem.Height</td>
                         <td>
-                            <button>Delete</button>
+                            <button class="btn btn-secondary" 
+                                @onclick="@(() => DeleteSubElementAsync(subElementItem))">Delete</button>
                         </td>
                     </tr>
                 }
@@ -41,4 +42,12 @@
 {
     [Parameter]
     public List<SubElementItem>? SubElementItems { get; set; }
+
+    [Parameter]
+    public EventCallback<SubElementItem> OnDeleteCallback { get; set; }
+
+    public async void DeleteSubElementAsync(SubElementItem item)
+    {
+        await OnDeleteCallback.InvokeAsync(item);
+    }
 }

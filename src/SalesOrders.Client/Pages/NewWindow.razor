@@ -51,7 +51,9 @@
                                    OnSaveItem="HandleNewSubElementSave"
                                    OnDiscardItem="HandleNewSubElementDiscard" />
                     }
-                    <SubElements SubElementItems="NewWindowItem.SubElements" />
+                    <SubElements
+                        SubElementItems="NewWindowItem.SubElements"
+                        OnDeleteCallback="HandleSubElementDelete"/>
                 </div>
             </div>
         </div>
@@ -120,4 +122,5 @@
     {
         NewWindowItem?.SubElements?.Remove(item);
     }
+
 }

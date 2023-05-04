@@ -55,8 +55,11 @@
         }
 
         <div class="col-md-4">
-            <Windows WindowItems="newOrderItem.Windows"
-                     OnDeleteCallback="OnDeleteWindow" />
+            <Windows 
+                OrderId="newOrderItem.Id"
+                WindowItems="newOrderItem.Windows"
+                OnDeleteCallback="OnDeleteWindow" 
+                OnDeleteSubElementCallback="OnDeleteSubElement" />
         </div>
     </div>
 </div>
@@ -124,5 +127,11 @@
     private async Task OnDeleteWindow(WindowItem item)
     {
         newOrderItem?.Windows?.Remove(item);
+    }
+
+    private async Task OnDeleteSubElement(SubElementItem item)
+    {
+        var window = newOrderItem?.Windows?.FirstOrDefault(i => i.Id == item.Id);
+        window?.SubElements?.Remove(item);
     }
 }

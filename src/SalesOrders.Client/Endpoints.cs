@@ -17,6 +17,6 @@ public class Endpoints
     public static Uri DeleteWindowUri(Guid orderId, Guid windowId) =>
         new($"{baseAddress}/orders/{orderId}/windows/{windowId}");
 
-    public static Uri DeleteSubElementUri(Guid orderId, Guid windowId, Guid subElementId) =>
-        new($"{baseAddress}/orders/{orderId}/windows/{windowId}/subelements/{subElementId}");
+    public static Uri DeleteSubElementUri(Guid windowId, Guid subElementId) =>
+        new($"{baseAddress}/windows/{windowId}/subelements/{subElementId}");
 }

@@ -105,20 +105,5 @@ public class OrdersController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{orderId}/windows/{windowId}/subelements/{subelementId}")]
-    public async Task<IActionResult> DeleteOrderWindowSubElement(Guid windowId, Guid subelementId)
-    {
-        var subElement = await context.SubElements
-            .FirstOrDefaultAsync(i => i.Id == subelementId && i.WindowId == windowId);
-
-        if (subElement == null)
-        {
-            return NotFound();
-        }
-
-        context.SubElements.Remove(subElement);
-        await context.SaveChangesAsync();
-
-        return NoContent();
-    }
+    
 }

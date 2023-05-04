@@ -46,8 +46,11 @@ else
                 {
                     <tr>
                         <td colspan="3">
-                            <Windows WindowItems="orderItem.Windows"
-                         OnDeleteCallback="DeleteWindow" />
+                            <Windows 
+                                OrderId="orderItem.Id"
+                                WindowItems="orderItem.Windows"
+                                OnDeleteCallback="DeleteWindow"
+                                OnDeleteSubElementCallback="DeleteSubElement"/>
                         </td>
                     </tr>
                 }
@@ -76,6 +79,12 @@ else
     private async Task DeleteWindow(WindowItem item)
     {
         await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
+        NavigationManager.NavigateTo("/get-orders");
+    }
+
+    private async Task DeleteSubElement(SubElementItem item)
+    {
+        await Http.DeleteAsync(Endpoints.DeleteSubElementUri(item.WindowId, item.Id));
         NavigationManager.NavigateTo("/get-orders");
     }
 
