@@ -27,7 +27,7 @@ else
                     <td>@windowItem.QuantityOfWindows</td>
                     <td>@windowItem.NumberOfSubElements</td>
                     <td>
-                        <button class="btn btn-light" @onclick="@(async () => DeleteWindowAsync(windowItem))">Delete</button>
+                        <button class="btn btn-secondary" @onclick="@(async () => DeleteWindowAsync(windowItem))">Delete</button>
                     </td>
                 </tr>
                 @if(windowItem.SubElements != null && windowItem.SubElements.Any())
