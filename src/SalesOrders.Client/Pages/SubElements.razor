@@ -1,5 +1,6 @@
 ﻿@using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
+
 <div class="row mt-3">
     <h5>SubElements:</h5>
     @if (SubElementItems == null || SubElementItems.Count == 0)
@@ -21,7 +22,7 @@
             <tbody>
                 @foreach (var subElementItem in SubElementItems)
                 {
-                    <tr>
+                    <tr @key="@subElementItem">
                         <td>@subElementItem.Element</td>
                         <td>@subElementItem.Type</td>
                         <td>@subElementItem.Width</td>
