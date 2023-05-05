@@ -25,7 +25,7 @@ else
                     <td>@orderItem.Name</td>
                     <td>@orderItem.State</td>
                     <td>
-                        <button @onclick="@(() => ToggleAddWindowContent(orderItem.Id))" class="btn btn-success">Add Window</button>
+                        <button @onclick="@(() => ToggleAddWindowContent(orderItem.Id))" class="btn btn-primary">Add Window</button>
                         <button @onclick="@(() => DeleteOrder(orderItem.Id))" class="btn btn-secondary">Delete</button>
                     </td>
                 </tr>

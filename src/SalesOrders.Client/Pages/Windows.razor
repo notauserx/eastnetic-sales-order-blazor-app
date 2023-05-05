@@ -22,7 +22,7 @@ else
         <tbody>
             @foreach (var windowItem in WindowItems)
             {
-                <tr>
+                <tr @key="@windowItem">
                     <td>@windowItem.Name</td>
                     <td>@windowItem.QuantityOfWindows</td>
                     <td>@windowItem.NumberOfSubElements</td>
