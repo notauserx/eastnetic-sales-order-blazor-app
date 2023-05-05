@@ -3,9 +3,19 @@
 
 @inject HttpClient Http
 
-@if (OrderItems == null || OrderItems.Count == 0)
+@if (OrderItems == null)
 {
-    <p>No orders found.</p>
+    <div class="row">
+        <div class="m-4">
+            <div class="spinner-grow" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    </div>
+}
+else if (OrderItems.Count == 0)
+{
+    <div class="p-2">No orders found.</div>
 }
 else
 {
