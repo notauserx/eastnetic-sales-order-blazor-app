@@ -21,7 +21,7 @@ else
         <tbody>
             @foreach (var orderItem in OrderItems)
             {
-                <tr>
+                <tr @key="@orderItem">
                     <td>@orderItem.Name</td>
                     <td>@orderItem.State</td>
                     <td>
@@ -73,32 +73,35 @@ else
 
     private async Task DeleteOrder(Guid orderId)
     {
-        await Http.DeleteAsync(Endpoints.DeleteOrderUri(orderId));
-        NavigationManager.NavigateTo("/get-orders");
+        var response = await Http.DeleteAsync(Endpoints.DeleteOrderUri(orderId));
+        if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            NavigationHelper.NavigateToGetOrders(NavigationManager);
     }
 
     private async Task DeleteWindow(WindowItem item)
     {
-        await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
-        NavigationManager.NavigateTo("/get-orders");
+        var response = await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
+        if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            NavigationHelper.NavigateToGetOrders(NavigationManager);
     }
 
     private async Task SaveSubElement(SubElementItem item)
     {
         await Http.PostAsJsonAsync(Endpoints.NewSubElementUri(item.WindowId), item);
-        NavigationManager.NavigateTo("/get-orders");
+        NavigationHelper.NavigateToGetOrders(NavigationManager);
     }
     private async Task DeleteSubElement(SubElementItem item)
     {
-        await Http.DeleteAsync(Endpoints.DeleteSubElementUri(item.WindowId, item.Id));
-        NavigationManager.NavigateTo("/get-orders");
+        var response = await Http.DeleteAsync(Endpoints.DeleteSubElementUri(item.WindowId, item.Id));
+        if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            NavigationHelper.NavigateToGetOrders(NavigationManager);
     }
 
     private async void OnSaveNewWindowToOrder(WindowItem windowItem)
     {
         await Http.PostAsJsonAsync(Endpoints.NewWindowUri(windowItem.OrderId), windowItem);
         showAddWindowContentOrderId = Guid.Empty;
-        NavigationManager.NavigateTo("/get-orders");
+        NavigationHelper.NavigateToGetOrders(NavigationManager);
     }
 
     private void OnDiscardAddWindow()

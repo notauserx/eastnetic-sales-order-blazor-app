@@ -121,7 +121,7 @@
 
     public void HandleCancel()
     {
-        NavigationManager.NavigateTo("/get-orders");
+        NavigationHelper.NavigateToGetOrders(NavigationManager);
     }
 
     private async Task OnDeleteWindow(WindowItem item)
