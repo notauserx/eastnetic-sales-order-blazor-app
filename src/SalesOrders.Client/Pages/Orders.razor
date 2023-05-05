@@ -32,10 +32,12 @@ else
                 {
                     <tr>
                         <td colspan="3">
-                            <NewWindow OrderId="orderItem.Id"
-                               NewWindowItem="WindowItem.CreateForOrder(orderItem.Id)"
-                               SaveItem="OnSaveNewWindowToOrder"
-                               DiscardItem="OnDiscardAddWindow" />
+                            <div class="row mt-3">
+                                <NewWindow OrderId="orderItem.Id"
+                                    NewWindowItem="WindowItem.CreateForOrder(orderItem.Id)"
+                                    SaveItem="OnSaveNewWindowToOrder"
+                                    DiscardItem="OnDiscardAddWindow" />
+                            </div>
                         </td>
 
 
@@ -45,12 +47,14 @@ else
                 {
                     <tr>
                         <td colspan="3">
-                            <Windows 
-                                OrderId="orderItem.Id"
-                                WindowItems="orderItem.Windows"
-                                OnDeleteCallback="DeleteWindow"
-                                OnSaveSubElementCallback="SaveSubElement"
-                                OnDeleteSubElementCallback="DeleteSubElement"/>
+                            <div class="row mt-3">
+                                <Windows 
+                                    OrderId="orderItem.Id"
+                                    WindowItems="orderItem.Windows"
+                                    OnDeleteCallback="DeleteWindow"
+                                    OnSaveSubElementCallback="SaveSubElement"
+                                    OnDeleteSubElementCallback="DeleteSubElement"/>
+                            </div>
                         </td>
                     </tr>
                 }

@@ -5,59 +5,60 @@
 @inject ILogger<NewWindow> Logger
 @inject HttpClient Http
 
-<h4>Add New Window Details:</h4>
-<div class="container-fluid">
     <div class="row mb-3">
-        <div class="col-md-6">
-            <EditForm EditContext="@editContext">
-                <DataAnnotationsValidator />
+            <fieldset>
+                <legend class="w-auto">New Order window details</legend>
+                <div class="row">
+                <div class="col-md-6">
+                    <EditForm EditContext="@editContext">
+                        <DataAnnotationsValidator />
 
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <div class="col-md-6">
-                        <InputText class="form-control" @bind-Value="NewWindowItem.Name" />
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <div class="col-md-6">
+                                <InputText class="form-control" @bind-Value="NewWindowItem.Name" />
+                            </div>
+                            <ValidationMessage For="@(() => NewWindowItem.Name)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"># of Windows</label>
+                            <div class="col-md-6">
+                                <InputNumber class="form-control" @bind-Value="NewWindowItem.QuantityOfWindows" />
+                            </div>
+                            <ValidationMessage For="@(() => NewWindowItem.QuantityOfWindows)" />
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" @onclick="HandleSave">Add Window</button>
+                            <button class="btn btn-light" @onclick="HandleCancel">Cancel</button>
+                        </div>
+
+                    </EditForm>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="row mb-3">
+                        <button class="btn btn-primary" @onclick="AddNewSubElement">Add SubElement</button>
                     </div>
-                    <ValidationMessage For="@(() => NewWindowItem.Name)" />
-                </div>
+                    <div class="row">
+                        <div class="mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label"># of Windows</label>
-                    <div class="col-md-6">
-                        <InputNumber class="form-control" @bind-Value="NewWindowItem.QuantityOfWindows" />
+                            @if (showNewSubElementForm)
+                            {
+                                <NewSubElement OrderId="NewWindowItem.OrderId"
+                                           WindowId="NewWindowItem.Id"
+                                           OnSaveItem="HandleNewSubElementSave"
+                                           OnDiscardItem="HandleNewSubElementDiscard" />
+                            }
+                            <SubElements SubElementItems="NewWindowItem.SubElements"
+                                         OnDeleteCallback="HandleSubElementDelete" />
+                        </div>
                     </div>
-                    <ValidationMessage For="@(() => NewWindowItem.QuantityOfWindows)" />
                 </div>
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary" @onclick="HandleSave">Add Window</button>
-                    <button class="btn btn-light" @onclick="HandleCancel">Cancel</button>
                 </div>
-
-            </EditForm>
-        </div>
-        <div class="col-md-6">
-
-            <div class="row mb-3">
-                <button class="btn btn-primary" @onclick="AddNewSubElement">Add SubElement</button>
-            </div>
-            <div class="row">
-                <div class="mb-3">
-
-                    @if (showNewSubElementForm)
-                    {
-                        <NewSubElement OrderId="NewWindowItem.OrderId"
-                                   WindowId="NewWindowItem.Id"
-                                   OnSaveItem="HandleNewSubElementSave"
-                                   OnDiscardItem="HandleNewSubElementDiscard" />
-                    }
-                    <SubElements
-                        SubElementItems="NewWindowItem.SubElements"
-                        OnDeleteCallback="HandleSubElementDelete"/>
-                </div>
-            </div>
-        </div>
+            </fieldset>
     </div>
-</div>
 
 @code {
     [Parameter]
