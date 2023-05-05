@@ -1,6 +1,6 @@
 ﻿@using SalesOrders.Contracts;
 @using SalesOrders.Contracts.Response;
-<div class="row">
+<div class="row mt-3">
     <h5>SubElements:</h5>
     @if (SubElementItems == null || SubElementItems.Count == 0)
     {
@@ -46,7 +46,7 @@
     [Parameter]
     public EventCallback<SubElementItem> OnDeleteCallback { get; set; }
 
-    public async void DeleteSubElementAsync(SubElementItem item)
+    public async Task DeleteSubElementAsync(SubElementItem item)
     {
         await OnDeleteCallback.InvokeAsync(item);
     }

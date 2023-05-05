@@ -61,8 +61,17 @@ else
 }
 
 @code {
-    [Parameter]
-    public List<OrderItem>? OrderItems { get; set; }
+    private List<OrderItem>? OrderItems { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetOrdersAsync();
+    }
+
+    private async Task GetOrdersAsync()
+    {
+        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrdersUri);
+    }
 
     private Guid showAddWindowContentOrderId;
 
@@ -75,33 +84,33 @@ else
     {
         var response = await Http.DeleteAsync(Endpoints.DeleteOrderUri(orderId));
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-            NavigationHelper.NavigateToGetOrders(NavigationManager);
+            await GetOrdersAsync();
     }
 
     private async Task DeleteWindow(WindowItem item)
     {
         var response = await Http.DeleteAsync(Endpoints.DeleteWindowUri(item.OrderId, item.Id));
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-            NavigationHelper.NavigateToGetOrders(NavigationManager);
+            await GetOrdersAsync();
     }
 
     private async Task SaveSubElement(SubElementItem item)
     {
         await Http.PostAsJsonAsync(Endpoints.NewSubElementUri(item.WindowId), item);
-        NavigationHelper.NavigateToGetOrders(NavigationManager);
+        await GetOrdersAsync();
     }
     private async Task DeleteSubElement(SubElementItem item)
     {
         var response = await Http.DeleteAsync(Endpoints.DeleteSubElementUri(item.WindowId, item.Id));
         if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
-            NavigationHelper.NavigateToGetOrders(NavigationManager);
+            await GetOrdersAsync();
     }
 
-    private async void OnSaveNewWindowToOrder(WindowItem windowItem)
+    private async Task OnSaveNewWindowToOrder(WindowItem windowItem)
     {
         await Http.PostAsJsonAsync(Endpoints.NewWindowUri(windowItem.OrderId), windowItem);
         showAddWindowContentOrderId = Guid.Empty;
-        NavigationHelper.NavigateToGetOrders(NavigationManager);
+        await GetOrdersAsync();
     }
 
     private void OnDiscardAddWindow()

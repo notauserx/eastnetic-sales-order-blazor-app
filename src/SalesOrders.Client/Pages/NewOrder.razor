@@ -7,7 +7,7 @@
 @inject NavigationManager NavigationManager
 
 <h4>Add New Order Details:</h4>
-<button class="btn btn-secondary">Back to orders</button>
+<button class="btn btn-secondary" @onclick="HandleCancel">Back to orders</button>
 <EditForm EditContext="@editContext" OnSubmit="@HandleSubmit">
     <DataAnnotationsValidator />
 
@@ -23,6 +23,7 @@
         <label class="form-label">State: </label>
         <div class="col-md-4">
             <InputSelect @bind-Value="@newOrderItem.State">
+                <option value="">--Select State--</option>
 
                 @foreach (var state in Enum.GetValues(typeof(USState)))
                 {

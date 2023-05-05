@@ -13,19 +13,9 @@
         <a class="btn btn-info" href="new-order">Add New Order</a>
     </div>
 </div>
-@if (OrderItems == null)
-{
-}
-else
-{
-    <Orders OrderItems="@OrderItems" />
-}
+<Orders />
 
 @code {
-    public List<OrderItem>? OrderItems { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        OrderItems = await Http.GetFromJsonAsync<List<OrderItem>>(Endpoints.GetOrdersUri);
-    }
+    
 }

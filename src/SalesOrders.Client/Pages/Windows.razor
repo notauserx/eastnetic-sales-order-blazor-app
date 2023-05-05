@@ -78,7 +78,7 @@ else
 
     private Guid NewSubElementWindowId;
 
-    public async void DeleteWindowAsync(WindowItem item)
+    public async Task DeleteWindowAsync(WindowItem item)
     {
         await OnDeleteCallback.InvokeAsync(item);
     }
@@ -88,7 +88,7 @@ else
         NewSubElementWindowId = windowId;
     }
 
-    private async void OnSaveNewSubElement(SubElementItem item)
+    private async Task OnSaveNewSubElement(SubElementItem item)
     {
         await OnSaveSubElementCallback.InvokeAsync(item);
         NewSubElementWindowId = Guid.Empty;
